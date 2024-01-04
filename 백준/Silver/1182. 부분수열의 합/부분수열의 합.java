@@ -1,31 +1,43 @@
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.StringTokenizer;
 
-class Main {
-    static int[] num;
-    private static int N; // 정수의 개수
-    private static int S; // 정수의 합
-    private static int answer = 0;
+public class Main {
 
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        N = sc.nextInt();
-        S = sc.nextInt();
-        num = new int[N];
-        for (int i = 0; i < N; i++) {
-            num[i] = sc.nextInt();
-        }
-        dfs(0, 0);
-        if (S == 0) System.out.println(answer - 1); 
-         else  System.out.println(answer);
+    public static int[] sequence;
+    public static int S, N, cases;
 
+    public static void main(String[] args) throws IOException {
+        solve();
     }
 
-    private static void dfs(int depth, int sum) {
-        if (depth == N) {
-            if (sum == S) answer++;
+    private static void solve() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+        N = Integer.parseInt(st.nextToken());
+        S = Integer.parseInt(st.nextToken());
+        sequence = new int[N];
+        cases = 0;
+
+        st = new StringTokenizer(br.readLine());
+        for (int i = 0; i < N; i++) {
+            sequence[i] = Integer.parseInt(st.nextToken());
+        }
+
+        dfs(0, 0);
+        System.out.println(S == 0 ? cases - 1 : cases);
+        br.close();
+    }
+
+    private static void dfs(int index, int sum) {
+        if(index == N) {
+            if (sum == S) {
+                cases++;
+            }
             return;
         }
-        dfs(depth + 1, sum + num[depth]);
-        dfs(depth + 1, sum); 
+        dfs(index + 1, sum + sequence[index]);
+        dfs(index + 1, sum);
     }
 }
