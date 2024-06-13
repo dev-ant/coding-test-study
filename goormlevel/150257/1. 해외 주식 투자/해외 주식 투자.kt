@@ -1,18 +1,12 @@
-import java.io.BufferedWriter
-import java.io.OutputStreamWriter
+import java.io.BufferedReader
+import java.io.InputStreamReader
 
-fun main(args: Array<String>) {
-	val bw = BufferedWriter(OutputStreamWriter(System.out))
+fun main (args: Array<String>) = with(BufferedReader(InputStreamReader(System.`in`))) {
+	val result = StringBuilder()
+	(1..readLine().toInt()).mapIndexed { index, _ ->
+		val (stockAmount, stockPrice) = readLine().split(" ").map { it.toDouble() }
+		Pair(index + 1, (stockAmount * stockPrice * 10).toInt())
+	}.sortedBy { -it.second }.forEach { result.append("${it.first} ") }
 	
-	(1..readLine()!!.toInt())
-		.mapIndexed { index, _ ->
-			val (v, w) = readLine()!!.split(" ")
-			val price = (v.toDouble() * w.toDouble() * 10).toInt()
-			Pair(price, index + 1)
-		}
-	  .sortedBy{ -it.first }
-		.forEach { bw.write("${it.second} ") }
-		
-	bw.flush()
-	bw.close()
+	print(result)
 }
