@@ -2,29 +2,24 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 
 fun main(args: Array<String>) = with(BufferedReader(InputStreamReader(System.`in`))) {
-    val (N, M) = readLine().split(" ").map { it.toInt() }
-    var maxScore = 0.0
-    var result = 0
-    // Pair(test time, test score sum) after for each Pair(test time, test score average)
-    val subject = Array (M + 1) { arrayOf<Double> ( 0.0, 0.0 ) }
-    (1..N).map {
-        val (c, s) = readLine().split(" ").map { it.toDouble() }
-        subject[c.toInt()][0]++
-        subject[c.toInt()][1] += s
-    }
-
-    subject.forEach {
-        if (it[0] != 0.0) {
-            it[1] /= it[0]
-        }
-    }
-
-    subject.forEachIndexed { index, it ->
-        if(maxScore < it[1]) {
-            result = index
-            maxScore = it[1]
-        }
-    }
-    
-    print(result)
+	// Input data : N -> testCount, M -> subjectCount
+	val (testCount, subjectCount) = readLine().split(" ").map { it.toInt() }
+	// subjectScores[][0] = code, subjectScore[][1] = sum
+	val subjectScores = Array (subjectCount + 1) { DoubleArray (2) }
+	
+	// 
+	repeat(testCount) { 
+		val (subjectCode, testScore) = readLine().split(" ").map { it.toDouble() }
+		subjectScores[subjectCode.toInt()][0]++
+		subjectScores[subjectCode.toInt()][1] += testScore
+	}
+	
+	// Create list contain average subject score
+	val result = subjectScores.
+	mapIndexed { index, (count, sum) ->
+		index to if (count > 0.0) (sum / count) else 0.0
+	}.maxByOrNull { it.second }?.first
+	
+	
+	print(result ?: -1)
 }
